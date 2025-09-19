@@ -96,8 +96,76 @@
     </div>
     
     <div id="message" class="success" style="display: none;"></div>
-
+    
     <script>
+        function buildHTML(title) {
+            // Only put the generated HTML for the scorecard, NOT the downloadScorecard code!
+            let html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>${title}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{font-family:Arial,sans-serif;max-width:800px;margin:0 auto;padding:20px;background:#f5f7fa;line-height:1.6}
+h1{text-align:center;color:#2c3e50;margin-bottom:30px;font-size:2.2em}
+.goal-section{margin-bottom:25px;padding:20px;border:2px solid #e9ecef;border-radius:8px;background:white}
+.goal-title{font-size:1.3em;font-weight:bold;color:#495057;margin-bottom:10px}
+.goal-target{color:#6c757d;font-style:italic;margin-bottom:15px}
+.scoring-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:15px}
+.score-value{font-weight:bold;font-size:1.1em}
+.score-description{font-size:0.9em;margin-top:5px}
+.current-score{text-align:center;font-weight:bold;color:#007bff;margin-top:10px;font-size:1.1em}
+.total-section{background:#e8f5e8;padding:20px;border-radius:8px;text-align:center;margin:30px 0}
+.total-score{font-size:2em;font-weight:bold;color:#28a745}
+label{display:block;margin-bottom:5px;font-weight:bold;color:#495057}
+.footer{text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid #dee2e6;color:#6c757d}
+.footer a{color:#007bff;text-decoration:none}
+.footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<h1>${title}</h1>
+`;
+
+            for (let i = 1; i <= 5; i++) {
+                let goalTitle = document.getElementById('g' + i).value || 'Goal ' + i;
+                let goalDesc = document.getElementById('d' + i).value || 'Description';
+                let score2 = document.getElementById('s' + i + '2').value || 'Excellent';
+                let score1 = document.getElementById('s' + i + '1').value || 'Good';
+                let score0 = document.getElementById('s' + i + '0').value || 'Poor';
+                
+                html += `
+<div class="goal-section">
+<div class="goal-title">${goalTitle}</div>
+<div class="goal-target">${goalDesc}</div>
+<div class="scoring-grid">
+<div>
+<div class="score-value">SCORE 2</div>
+<div class="score-description">${score2}</div>
+</div>
+<div>
+<div class="score-value">SCORE 1</div>
+<div class="score-description">${score1}</div>
+</div>
+<div>
+<div class="score-value">SCORE 0</div>
+<div class="score-description">${score0}</div>
+</div>
+</div>
+</div>
+`;
+            }
+            html += `
+<div class="footer">
+<p>Open source project • <a href="https://github.com/BenSweaterVest/HealthyScoreCard">View on GitHub</a></p>
+</div>
+</body>
+</html>
+`;
+            return html;
+        }
+
         function downloadScorecard() {
             var title = document.getElementById('title').value || 'Weekly Health Goals';
             var content = buildHTML(title);
@@ -106,199 +174,15 @@
             var a = document.createElement('a');
             a.href = url;
             a.download = 'index.html';
+            document.body.appendChild(a);
             a.click();
+            document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            
+
             var msg = document.getElementById('message');
             msg.textContent = 'Downloaded: ' + title;
             msg.style.display = 'block';
             setTimeout(function() { msg.style.display = 'none'; }, 3000);
-        }
-
-        function buildHTML(title) {
-            var html = '<!DOCTYPE html>\\n<html lang="en">\\n<head>\\n';
-            html += '<meta charset="UTF-8">\\n';
-            html += '<meta name="viewport" content="width=device-width, initial-scale=1.0">\\n';
-            html += '<title>' + title + '</title>\\n';
-            html += '<link rel="icon" href="https://favicon.show/thesweatervest.com">\\n';
-            html += '<style>\\n';
-            html += 'body{font-family:Arial,sans-serif;max-width:800px;margin:0 auto;padding:20px;background:#f5f7fa;line-height:1.6}\\n';
-            html += '.container{background:white;border-radius:12px;padding:30px;box-shadow:0 4px 6px rgba(0,0,0,0.1)}\\n';
-            html += 'h1{text-align:center;color:#2c3e50;margin-bottom:30px;font-size:2.2em}\\n';
-            html += '.names-section{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:30px;padding:20px;background:#f8f9fa;border-radius:8px}\\n';
-            html += '.goal-section{margin-bottom:25px;padding:20px;border:2px solid #e9ecef;border-radius:8px;background:white}\\n';
-            html += '.goal-title{font-size:1.3em;font-weight:bold;color:#495057;margin-bottom:10px}\\n';
-            html += '.goal-target{color:#6c757d;font-style:italic;margin-bottom:15px}\\n';
-            html += '.scoring-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:15px}\\n';
-            html += '.score-option{padding:12px;border:2px solid #dee2e6;border-radius:6px;text-align:center;cursor:pointer;transition:all 0.3s ease;background:white}\\n';
-            html += '.score-option:hover{border-color:#007bff;background:#f8f9fa}\\n';
-            html += '.score-option.selected{border-color:#007bff;background:#007bff;color:white}\\n';
-            html += '.score-value{font-weight:bold;font-size:1.1em}\\n';
-            html += '.score-description{font-size:0.9em;margin-top:5px}\\n';
-            html += '.current-score{text-align:center;font-weight:bold;color:#007bff;margin-top:10px;font-size:1.1em}\\n';
-            html += '.total-section{background:#e8f5e8;padding:20px;border-radius:8px;text-align:center;margin:30px 0}\\n';
-            html += '.total-score{font-size:2em;font-weight:bold;color:#28a745}\\n';
-            html += '.notes-section{margin:30px 0}\\n';
-            html += '.checkin-item{margin-bottom:20px;padding:15px;background:#f8f9fa;border-radius:8px}\\n';
-            html += '.checkin-item label{display:block;margin-bottom:8px;font-weight:bold;color:#495057;font-size:16px}\\n';
-            html += '.checkin-item input[type="text"]{width:100%;padding:12px;border:2px solid #dee2e6;border-radius:6px;font-size:14px;box-sizing:border-box}\\n';
-            html += '.checkin-item textarea{width:100%;min-height:100px;padding:12px;border:2px solid #dee2e6;border-radius:6px;font-family:inherit;font-size:14px;resize:vertical;box-sizing:border-box}\\n';
-            html += '.buttons{display:flex;gap:15px;justify-content:center;margin-top:30px}\\n';
-            html += 'button{padding:12px 24px;border:none;border-radius:6px;font-size:16px;font-weight:bold;cursor:pointer;transition:all 0.3s ease}\\n';
-            html += '.copy-btn{background:#007bff;color:white}\\n';
-            html += '.copy-btn:hover{background:#0056b3}\\n';
-            html += '.reset-btn{background:#6c757d;color:white}\\n';
-            html += '.reset-btn:hover{background:#545b62}\\n';
-            html += '.results-display{margin-top:30px;padding:25px;background:#f8f9fa;border:2px solid #dee2e6;border-radius:8px;display:none}\\n';
-            html += '.results-text{width:100%;min-height:250px;padding:15px;border:2px solid #007bff;border-radius:6px;font-family:monospace;font-size:14px;background:white;resize:vertical;box-sizing:border-box;line-height:1.5}\\n';
-            html += 'input[type="text"]{width:100%;padding:10px;border:2px solid #dee2e6;border-radius:6px;font-size:14px;box-sizing:border-box}\\n';
-            html += 'label{display:block;margin-bottom:5px;font-weight:bold;color:#495057}\\n';
-            html += '.footer{text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid #dee2e6;color:#6c757d}\\n';
-            html += '.footer a{color:#007bff;text-decoration:none}\\n';
-            html += '.footer a:hover{text-decoration:underline}\\n';
-            html += '</style>\\n</head>\\n<body>\\n<div class="container">\\n';
-            html += '<h1>' + title + '</h1>\\n';
-            html += '<div class="names-section">\\n';
-            html += '<div><label for="evaluator-name">Evaluator Name (Optional):</label><input type="text" id="evaluator-name" placeholder="Your name"></div>\\n';
-            html += '<div><label for="patient-name">Patient Name (Optional):</label><input type="text" id="patient-name" placeholder="Patient name"></div>\\n';
-            html += '</div>\\n';
-            
-            // Add goals
-            for (var i = 1; i <= 5; i++) {
-                var goalTitle = document.getElementById('g' + i).value || 'Goal ' + i;
-                var goalDesc = document.getElementById('d' + i).value || 'Description';
-                var score2 = document.getElementById('s' + i + '2').value || 'Excellent';
-                var score1 = document.getElementById('s' + i + '1').value || 'Good';
-                var score0 = document.getElementById('s' + i + '0').value || 'Poor';
-                
-                html += '<div class="goal-section">\\n';
-                html += '<div class="goal-title">' + goalTitle + '</div>\\n';
-                html += '<div class="goal-target">' + goalDesc + '</div>\\n';
-                html += '<div class="scoring-grid" data-goal="goal' + i + '">\\n';
-                html += '<div class="score-option" data-score="2">\\n';
-                html += '<div class="score-value">SCORE 2</div>\\n';
-                html += '<div class="score-description">' + score2 + '</div>\\n';
-                html += '</div>\\n';
-                html += '<div class="score-option" data-score="1">\\n';
-                html += '<div class="score-value">SCORE 1</div>\\n';
-                html += '<div class="score-description">' + score1 + '</div>\\n';
-                html += '</div>\\n';
-                html += '<div class="score-option" data-score="0">\\n';
-                html += '<div class="score-value">SCORE 0</div>\\n';
-                html += '<div class="score-description">' + score0 + '</div>\\n';
-                html += '</div>\\n';
-                html += '</div>\\n';
-                html += '<div class="current-score" id="goal' + i + '-score">This Week: ___/2</div>\\n';
-                html += '</div>\\n';
-            }
-            
-            html += '<div class="total-section">\\n';
-            html += '<div class="total-score" id="total-score">Total Score: ___/10</div>\\n';
-            html += '</div>\\n';
-            html += '<div class="notes-section">\\n';
-            html += '<h3>Quick Weekly Check-In</h3>\\n';
-            html += '<div class="checkin-item">\\n';
-            html += '<label for="biggest-win">Biggest win:</label>\\n';
-            html += '<input type="text" id="biggest-win" placeholder="What went really well this week?">\\n';
-            html += '</div>\\n';
-            html += '<div class="checkin-item">\\n';
-            html += '<label for="main-challenge">Main challenge:</label>\\n';
-            html += '<input type="text" id="main-challenge" placeholder="What was most difficult this week?">\\n';
-            html += '</div>\\n';
-            html += '<div class="checkin-item">\\n';
-            html += '<label for="what-helped">What helped:</label>\\n';
-            html += '<input type="text" id="what-helped" placeholder="What strategies or support helped you succeed?">\\n';
-            html += '</div>\\n';
-            html += '<div class="checkin-item">\\n';
-            html += '<label for="next-focus">Next week focus:</label>\\n';
-            html += '<input type="text" id="next-focus" placeholder="What will you focus on next week?">\\n';
-            html += '</div>\\n';
-            html += '<div class="checkin-item">\\n';
-            html += '<label for="dietitian-notes">Dietitian Notes:</label>\\n';
-            html += '<textarea id="dietitian-notes" placeholder="Professional observations and recommendations..."></textarea>\\n';
-            html += '</div>\\n';
-            html += '</div>\\n';
-            html += '<div class="buttons">\\n';
-            html += '<button class="copy-btn" onclick="copyResults()">Copy Results</button>\\n';
-            html += '<button class="reset-btn" onclick="resetForm()">Reset Form</button>\\n';
-            html += '</div>\\n';
-            html += '<div class="results-display" id="results-display">\\n';
-            html += '<h3>Results Preview</h3>\\n';
-            html += '<textarea id="results-text" class="results-text" readonly></textarea>\\n';
-            html += '</div>\\n';
-            html += '<div class="footer">\\n';
-            html += '<p>Open source project • <a href="https://github.com/BenSweaterVest/HealthyScoreCard">View on GitHub</a></p>\\n';
-            html += '</div>\\n';
-            html += '</div>\\n';
-            
-            // JavaScript
-            html += '<script>\\n';
-            html += 'var scores = {goal1:0,goal2:0,goal3:0,goal4:0,goal5:0};\\n';
-            html += 'var goalNames = {';
-            for (var i = 1; i <= 5; i++) {
-                var goalTitle = document.getElementById('g' + i).value || 'Goal ' + i;
-                html += 'goal' + i + ':"' + goalTitle + '"';
-                if (i < 5) html += ',';
-            }
-            html += '};\\n';
-            html += 'document.querySelectorAll(".score-option").forEach(function(option){\\n';
-            html += 'option.addEventListener("click",function(){\\n';
-            html += 'var goal=this.closest(".scoring-grid").dataset.goal;\\n';
-            html += 'var score=parseInt(this.dataset.score);\\n';
-            html += 'this.parentNode.querySelectorAll(".score-option").forEach(function(opt){opt.classList.remove("selected");});\\n';
-            html += 'this.classList.add("selected");\\n';
-            html += 'scores[goal]=score;\\n';
-            html += 'updateDisplay();\\n';
-            html += '});\\n';
-            html += '});\\n';
-            html += 'function updateDisplay(){\\n';
-            html += 'Object.keys(scores).forEach(function(goal){\\n';
-            html += 'document.getElementById(goal+"-score").textContent="This Week: "+scores[goal]+"/2";\\n';
-            html += '});\\n';
-            html += 'var total=Object.values(scores).reduce(function(sum,score){return sum+score;},0);\\n';
-            html += 'document.getElementById("total-score").textContent="Total Score: "+total+"/10";\\n';
-            html += '}\\n';
-            html += 'function copyResults(){\\n';
-            html += 'var evaluator=document.getElementById("evaluator-name").value;\\n';
-            html += 'var patient=document.getElementById("patient-name").value;\\n';
-            html += 'var win=document.getElementById("biggest-win").value;\\n';
-            html += 'var challenge=document.getElementById("main-challenge").value;\\n';
-            html += 'var helped=document.getElementById("what-helped").value;\\n';
-            html += 'var focus=document.getElementById("next-focus").value;\\n';
-            html += 'var notes=document.getElementById("dietitian-notes").value;\\n';
-            html += 'var output="WEEKLY GOALS\\\\n=======\\\\n";\\n';
-            html += 'if(evaluator)output+="Evaluator: "+evaluator+"\\\\n";\\n';
-            html += 'if(patient)output+="Patient: "+patient+"\\\\n";\\n';
-            html += 'if(evaluator||patient)output+="\\\\n";\\n';
-            html += 'Object.keys(scores).forEach(function(goal){\\n';
-            html += 'output+=goalNames[goal]+": "+scores[goal]+" / 2\\\\n";\\n';
-            html += '});\\n';
-            html += 'var total=Object.values(scores).reduce(function(sum,score){return sum+score;},0);\\n';
-            html += 'output+="\\\\n**Total Score: "+total+" / 10**\\\\n";\\n';
-            html += 'if(win||challenge||helped||focus||notes){\\n';
-            html += 'output+="\\\\nQuick Weekly Check-In:\\\\n\\\\n";\\n';
-            html += 'if(win)output+="Biggest win: "+win+"\\\\n";\\n';
-            html += 'if(challenge)output+="Main challenge: "+challenge+"\\\\n";\\n';
-            html += 'if(helped)output+="What helped: "+helped+"\\\\n";\\n';
-            html += 'if(focus)output+="Next week focus: "+focus+"\\\\n";\\n';
-            html += 'if(notes)output+="Dietitian Notes: "+notes+"\\\\n";\\n';
-            html += '}\\n';
-            html += 'document.getElementById("results-text").value=output;\\n';
-            html += 'document.getElementById("results-display").style.display="block";\\n';
-            html += 'navigator.clipboard.writeText(output);\\n';
-            html += '}\\n';
-            html += 'function resetForm(){\\n';
-            html += 'scores={goal1:0,goal2:0,goal3:0,goal4:0,goal5:0};\\n';
-            html += 'document.querySelectorAll(".score-option").forEach(function(opt){opt.classList.remove("selected");});\\n';
-            html += 'document.querySelectorAll("input,textarea").forEach(function(i){i.value="";});\\n';
-            html += 'document.getElementById("results-display").style.display="none";\\n';
-            html += 'updateDisplay();\\n';
-            html += '}\\n';
-            html += 'updateDisplay();\\n';
-            html += '</script>\\n';
-            html += '</body>\\n</html>';
-            
-            return html;
         }
     </script>
 </body>
