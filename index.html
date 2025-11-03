@@ -540,13 +540,13 @@ ${goalNamesJS}
             // Update individual goal scores
             Object.keys(scores).forEach(goal => {
                 const scoreElement = document.getElementById(goal + '-score');
-                scoreElement.textContent = \`This Week: \${scores[goal]}/2\`;
+                scoreElement.textContent = 'This Week: ' + scores[goal] + '/2';
             });
 
             // Update total score
             const total = Object.values(scores).reduce((sum, score) => sum + score, 0);
             const maxTotal = Object.values(maxScores).reduce((sum, max) => sum + max, 0);
-            document.getElementById('total-score').textContent = \`Total Score: \${total}/\${maxTotal}\`;
+            document.getElementById('total-score').textContent = 'Total Score: ' + total + '/' + maxTotal;
         }
 
         function copyResults() {
@@ -562,10 +562,10 @@ ${goalNamesJS}
             output += "=======\\n";
 
             if (evaluatorName) {
-                output += \`Evaluator: \${evaluatorName}\\n\`;
+                output += 'Evaluator: ' + evaluatorName + '\\n';
             }
             if (patientName) {
-                output += \`Patient: \${patientName}\\n\`;
+                output += 'Patient: ' + patientName + '\\n';
             }
             if (evaluatorName || patientName) {
                 output += "\\n";
@@ -573,22 +573,22 @@ ${goalNamesJS}
 
             // Add individual scores in rubric format
             Object.keys(scores).forEach(goal => {
-                output += \`\${goalNames[goal]}: \${scores[goal]} / \${maxScores[goal]}\\n\`;
+                output += goalNames[goal] + ': ' + scores[goal] + ' / ' + maxScores[goal] + '\\n';
             });
 
             // Add total
             const total = Object.values(scores).reduce((sum, score) => sum + score, 0);
             const maxTotal = Object.values(maxScores).reduce((sum, max) => sum + max, 0);
-            output += \`\\n**Total Score: \${total} / \${maxTotal}**\\n\`;
+            output += '\\n**Total Score: ' + total + ' / ' + maxTotal + '**\\n';
 
             // Add check-in responses
             if (biggestWin || mainChallenge || whatHelped || nextFocus || dietitianNotes) {
                 output += "\\nQuick Weekly Check-In:\\n\\n";
-                if (biggestWin) output += \`Biggest win: \${biggestWin}\\n\`;
-                if (mainChallenge) output += \`Main challenge: \${mainChallenge}\\n\`;
-                if (whatHelped) output += \`What helped: \${whatHelped}\\n\`;
-                if (nextFocus) output += \`Next week focus: \${nextFocus}\\n\`;
-                if (dietitianNotes) output += \`Dietitian Notes: \${dietitianNotes}\\n\`;
+                if (biggestWin) output += 'Biggest win: ' + biggestWin + '\\n';
+                if (mainChallenge) output += 'Main challenge: ' + mainChallenge + '\\n';
+                if (whatHelped) output += 'What helped: ' + whatHelped + '\\n';
+                if (nextFocus) output += 'Next week focus: ' + nextFocus + '\\n';
+                if (dietitianNotes) output += 'Dietitian Notes: ' + dietitianNotes + '\\n';
             }
 
             // Show and populate the results text box
