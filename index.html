@@ -99,6 +99,26 @@
     
     <script>
         function buildHTML(title) {
+            // Helper function to escape strings for safe insertion into HTML
+            function escapeHtml(str) {
+                return str.replace(/&/g, '&amp;')
+                          .replace(/</g, '&lt;')
+                          .replace(/>/g, '&gt;')
+                          .replace(/"/g, '&quot;')
+                          .replace(/'/g, '&#039;');
+            }
+
+            // Helper function to escape strings for safe insertion into JavaScript strings
+            function escapeJs(str) {
+                return str.replace(/\\/g, '\\\\')
+                          .replace(/'/g, "\\'")
+                          .replace(/"/g, '\\"')
+                          .replace(/`/g, '\\`')
+                          .replace(/\n/g, '\\n')
+                          .replace(/\r/g, '\\r')
+                          .replace(/\t/g, '\\t');
+            }
+
             // Get all the goal data from the form
             const goals = [];
             const goalIds = ['goal1', 'goal2', 'goal3', 'goal4', 'goal5'];
@@ -120,7 +140,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${title}</title>
+    <title>${escapeHtml(title)}</title>
     <link rel="icon" type="image/x-icon" href="https://favicon.show/thesweatervest.com">
     <link rel="shortcut icon" href="https://favicon.show/thesweatervest.com">
     <link rel="apple-touch-icon" href="https://favicon.show/thesweatervest.com">
@@ -399,7 +419,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>${title}</h1>
+        <h1>${escapeHtml(title)}</h1>
 
         <div class="names-section">
             <div>
@@ -416,22 +436,22 @@
 
             // Generate goal sections
             goals.forEach((goal, index) => {
-                html += `        <!-- Goal ${index + 1}: ${goal.title} -->
+                html += `        <!-- Goal ${index + 1}: ${escapeHtml(goal.title)} -->
         <div class="goal-section">
-            <div class="goal-title">${goal.title}</div>
-            <div class="goal-target">${goal.description}</div>
+            <div class="goal-title">${escapeHtml(goal.title)}</div>
+            <div class="goal-target">${escapeHtml(goal.description)}</div>
             <div class="scoring-grid" data-goal="${goal.id}">
                 <div class="score-option" data-score="2">
                     <div class="score-value">SCORE 2</div>
-                    <div class="score-description">${goal.score2}</div>
+                    <div class="score-description">${escapeHtml(goal.score2)}</div>
                 </div>
                 <div class="score-option" data-score="1">
                     <div class="score-value">SCORE 1</div>
-                    <div class="score-description">${goal.score1}</div>
+                    <div class="score-description">${escapeHtml(goal.score1)}</div>
                 </div>
                 <div class="score-option" data-score="0">
                     <div class="score-value">SCORE 0</div>
-                    <div class="score-description">${goal.score0}</div>
+                    <div class="score-description">${escapeHtml(goal.score0)}</div>
                 </div>
             </div>
             <div class="current-score" id="${goal.id}-score">This Week: ___/2</div>
@@ -440,8 +460,8 @@
 `;
             });
 
-            // Build goal names object for JavaScript
-            const goalNamesJS = goals.map((g, i) => `            ${g.id}: '${g.title}'`).join(',\n');
+            // Build goal names object for JavaScript (escape titles for safe JS insertion)
+            const goalNamesJS = goals.map((g, i) => `            ${g.id}: '${escapeJs(g.title)}'`).join(',\n');
 
             html += `        <div class="total-section">
             <div class="total-score" id="total-score">Total Score: ___/10</div>
