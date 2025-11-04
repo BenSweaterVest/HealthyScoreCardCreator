@@ -15,13 +15,13 @@ This tool lets you create custom health scorecards by:
 3. **Generating a standalone HTML file** - Download a fully functional, interactive scorecard
 
 The generated scorecard is a complete, self-contained HTML file with:
-- ✅ Clickable score selection with visual feedback
-- ✅ Name fields for evaluator and patient/client
-- ✅ Weekly check-in questions and notes
-- ✅ Copy to clipboard functionality
-- ✅ Form reset capability
-- ✅ Professional styling
-- ✅ Mobile-responsive design
+- Clickable score selection with visual feedback
+- Name fields for evaluator and patient/client
+- Weekly check-in questions and notes
+- Copy to clipboard functionality
+- Form reset capability
+- Professional styling
+- Mobile-responsive design
 
 ## Why I built this
 
@@ -92,11 +92,11 @@ All of this in a single HTML file - no external dependencies, no server required
 ### Self-contained files
 
 Both the creator and the generated scorecards are single HTML files. This means:
-- ✅ No installation needed
-- ✅ Works on any device with a browser
-- ✅ No internet required after downloading
-- ✅ Easy to share via email or file sharing
-- ✅ Complete privacy - nothing sent to servers
+- No installation needed
+- Works on any device with a browser
+- No internet required after downloading
+- Easy to share via email or file sharing
+- Complete privacy - nothing sent to servers
 
 ### Browser compatibility
 
@@ -134,20 +134,20 @@ If you want to modify the creator tool itself:
 
 ### Change the number of goals
 Currently supports 5 goals. To add more:
-1. Add new goal sections in the HTML (lines 24-92)
-2. Update the `buildHTML()` function loop (line 106)
-3. Add corresponding form fields
+1. Add new goal sections in the HTML form
+2. Update the `buildHTML()` function to generate the additional goals
+3. Add corresponding form field IDs
 
 ### Modify the scoring scale
 Currently uses 0-2 points. To change:
-1. Update the score input fields (currently s12, s11, s10 for score 2, 1, 0)
+1. Update the score input fields in the creator form
 2. Modify the generated JavaScript to handle different score ranges
-3. Update maxScores in the generated code
+3. Update the maxScores calculation in the generated code
 
 ### Change styling
-All styles are in two places:
-1. Creator UI styles (lines 5-15) - how the creator form looks
-2. Generated scorecard styles (lines 127-397 in buildHTML) - how the output looks
+All styles are in the `index.html` file:
+1. Creator UI styles in the `<style>` tag - controls how the creator form looks
+2. Generated scorecard styles in the `buildHTML()` function - controls how the output scorecard looks
 
 ## Output Format
 
@@ -223,4 +223,4 @@ For issues or questions:
 
 ---
 
-Built with ❤️ for anyone tracking goals and wanting to measure progress.
+Built for anyone tracking goals and wanting to measure progress.
